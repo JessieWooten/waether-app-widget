@@ -17,6 +17,9 @@ const GlobalStyle = createGlobalStyle<{ themeStyles: ITheme }>`
     font-size: 12px;
   }
   body {
+    display: flex;
+    align-items: center; 
+    justify-content: center;
     font-family: ${(props) => props.themeStyles.fontFamily || "Roboto"};
     background: white;
     font-size: 12px;
