@@ -17,7 +17,7 @@
     "jsx": "react",
     "suppressImplicitAnyIndexErrors": true
   },
-  "include": ["src"],
+  "include": ["src", "WeatherIconsTypes.d.ts"],
   "typedocOptions": {
     "mode": "file",
     "out": "docs",
