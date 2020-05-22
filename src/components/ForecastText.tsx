@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { IForecast } from "../models/Forecast";
 import { Temperature, Heading, Text, Divider } from "./base/Typography";
 import WeatherIcon from "./base/WeatherIcon";
+import { invert, rgba } from "polished";
 
 interface IProps {
   forecast: IForecast;
@@ -30,7 +31,7 @@ export default WeatherText;
 
 const ForecastTextContainer = styled.div`
   z-index: 15;
-  text-shadow: 0 0 16px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 0 16px ${(props) => rgba(invert(props.theme.textColor), 0.3)};
 `;
 
 const HeadingWrapper = styled.div`
