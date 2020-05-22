@@ -2,11 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { lighten, rgba } from "polished";
 import { IForecast, IForecastImage } from "./models/Forecast";
-import {
-  fetchForecastByLocationName,
-  fetchForecastByCoordinates,
-  getBrowserLocation,
-} from "./api/WeatherServiceApi";
+import { fetchForecastByLocationName } from "./api/WeatherServiceApi";
 import Theme from "./themes/ThemeWrapper";
 import fetchThemeByName from "./themes/utils/fetchThemeByName";
 import ForecastText from "./components/ForecastText";
@@ -27,22 +23,19 @@ function App() {
     location = newLocation;
   };
   const [errorMessage, setErrorMessage] = useState("");
-
   useEffect(() => {
     (async () => {
       try {
         setErrorMessage("");
         setForecast(undefined);
-        let forecastResponse;
-        if (location)
-          forecastResponse = await fetchForecastByLocationName(location);
-        else {
-          const coords = await getBrowserLocation();
-          forecastResponse = await fetchForecastByCoordinates(
-            coords.latitude,
-            coords.longitude
-          );
-        }
+        if (!location) return setIsSettingsOpen(true);
+        const forecastResponse = await fetchForecastByLocationName(location);
+        // const coords = await getBrowserLocation();
+        // forecastResponse = await fetchForecastByCoordinates(
+        //   coords.latitude,
+        //   coords.longitude
+        // );
+        // }
         setForecast(forecastResponse.forecast);
         setImage(forecastResponse.image);
       } catch (e) {
