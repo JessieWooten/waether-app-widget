@@ -45,6 +45,7 @@ const Settings: React.FC<IProps> = ({
         <WiDirectionRight size={36} onClick={handleClose} />
       </HeadingWrapper>
       <Input
+        placeholder="Enter your location"
         value={location}
         onChange={(event: any) => setLocation(event?.target?.value)}
       />
