@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { rgba } from "polished";
 import { IForecast } from "../models/Forecast";
 import WeatherIcon from "./base/WeatherIcon";
-import { centerContent } from "./base/Position";
+import { CenterContent } from "./base/Position";
 
 interface IProps {
   forecast: IForecast;
@@ -45,7 +45,7 @@ const Halo = styled.div`
   z-index: 0;
 `;
 
-const InnerHalo = styled(centerContent)`
+const InnerHalo = styled(CenterContent)`
   background: ${(props) => props.theme.secondaryColor};
   width: 160px;
   height: 160px;
