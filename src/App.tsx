@@ -4,12 +4,9 @@ import { lighten, rgba } from "polished";
 import Theme from "./themes/ThemeWrapper";
 import fetchThemeByName from "./themes/utils/fetchThemeByName";
 import ForecastView from "./components/views/ForecastView";
-import SettingsPage from "./components/SettingsPage";
-import SettingsDots from "./components/SettingsDots";
 import ErrorMessage from "./components/ErrorMessage";
 import useWeatherApp from "./hooks/useWeatherApp";
 import { ForecastIcon } from "./models/Forecast";
-import { Heading } from "./components/base/Typography";
 import SettingsView from "./components/views/SettingsView";
 import LoadingView from "./components/views/LoadingView";
 
