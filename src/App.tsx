@@ -87,7 +87,6 @@ const WidgetContainer = styled.div<{ backgroundImage: string; icon: string }>`
   background-image: ${(props) => `url(${props.backgroundImage})`};
   background-position: center;
   background-size: cover;
-  border-radius: 20px;
   overflow: hidden;
   display: flex;
   align-items: center;
