@@ -7,61 +7,74 @@ export interface IForecastResponse {
   forecast: IForecast;
   image: IForecastImage;
 }
+export interface IForecastError {
+  message: string;
+  error: any;
+}
 
-const fetchForecast = async (url: string): Promise<IForecastResponse> => {
-  const { location, forecast, image } = await fetch(url).then((res) =>
-    res.json()
-  );
-  const forecastResponse: IForecastResponse = {
-    forecast: {
-      location: location,
-      temperature: forecast.temperature,
-      summary: forecast.summary,
-      icon: forecast.icon,
-      precipProbability: forecast.precipProbability,
-    },
-    image: {
-      id: image.id,
-      imgUrl: image.imgUrl,
-      photographer: image.photographer,
-    },
-  };
-  return forecastResponse;
+export type ForecastResponseType = IForecastResponse | IForecastError;
+const fetchForecast = async (url: string): Promise<ForecastResponseType> => {
+  try {
+    const response = await fetch(url).then((res) => res.json());
+    if (response.error) {
+      return {
+        message: response.message,
+        error: response.error,
+      } as IForecastError;
+    }
+    const { location, forecast, image } = response;
+    const forecastResponse: IForecastResponse = {
+      forecast: {
+        location: location,
+        temperature: forecast.temperature,
+        summary: forecast.summary,
+        icon: forecast.icon,
+        precipProbability: forecast.precipProbability,
+      },
+      image: {
+        id: image.id,
+        imgUrl: image.imgUrl,
+        photographer: image.photographer,
+      },
+    };
+    return forecastResponse;
+  } catch (e) {
+    console.log(e, 123123);
+    return {
+      status: e.status,
+      message: e.message,
+      error: e.error,
+    } as IForecastError;
+  }
 };
 
 export const fetchForecastByCoordinates = async (
   latitude: number,
   longitude: number
-): Promise<IForecastResponse> => {
-  const url = `${API_URL}?latitiude=${latitude}&longitude=${longitude}`;
+): Promise<ForecastResponseType> => {
+  if (latitude === undefined || longitude === undefined)
+    throw new Error("[fetchForecastByCoordinates]: Bad input");
+  const url = `${API_URL}?latitude=${latitude}&longitude=${longitude}`;
   return fetchForecast(url);
 };
 
 export const fetchForecastByLocationName = async (
   place: string
-): Promise<IForecastResponse> => {
+): Promise<ForecastResponseType> => {
   const url = `${API_URL}?address=${place.toLocaleLowerCase().trim()}`;
   return fetchForecast(url);
 };
 
-export async function getBrowserLocation(): Promise<Coordinates> {
-  return new Promise((resolve, reject) => {
-    if (
-      !navigator ||
-      !navigator.geolocation ||
-      !navigator.geolocation.getCurrentPosition
-    ) {
-      return reject("Couldn't find getCurrentPosition on browser window");
-    }
-    const options = {
-      enableHighAccuracy: true,
-      timeout: 10000,
-      maximumAge: 0,
-    };
-    navigator.geolocation.getCurrentPosition(
-      ({ coords }) => resolve(coords),
-      reject,
-      options
+export const handleFetchForecast = async (
+  location: string
+): Promise<ForecastResponseType> => {
+  try {
+    const coordinates = JSON.parse(location);
+    return await fetchForecastByCoordinates(
+      coordinates.latitude,
+      coordinates.longitude
     );
-  });
-}
+  } catch (e) {
+    return await fetchForecastByLocationName(location);
+  }
+};
