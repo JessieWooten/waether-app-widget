@@ -33,7 +33,7 @@ export const MoonLoader = styled.div<IProps>`
     border-radius: 50%;
     background: ${(props) => props.overlayColor || "black"};
     animation: slideAcross;
-    animation-duration: 2s;
+    animation-duration: 4s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
   }
