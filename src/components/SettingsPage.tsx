@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import {
   VerticalCenterContent,
@@ -8,8 +8,10 @@ import { Heading } from "./base/Typography";
 import { Input, Button } from "./base/FormElements";
 import { WiDirectionRight } from "weather-icons-react";
 import ToggleSwitch from "./base/ToggleSwitch";
+import useSettings from "../hooks/useSettings";
+import useGeolocation from "../hooks/useGeolocation";
 
-interface IProps {
+export interface IProps {
   isCelcius: boolean;
   toggleIsCelcius: () => void;
   closePage: () => void;
@@ -22,40 +24,39 @@ const Settings: React.FC<IProps> = ({
   closePage,
   updateLocation,
 }) => {
-  const [location, setLocation] = useState(
-    window.localStorage.getItem("wwjw-location") || ""
-  );
-  const [inView, setInView] = useState(false);
-  useEffect(() => setInView(true), []);
-
-  const handleClose = (): void => {
-    setInView(false);
-    setTimeout(closePage, 300);
+  const geolocation = useGeolocation();
+  const settings = useSettings({
+    isCelcius,
+    toggleIsCelcius,
+    closePage,
+    updateLocation,
+  });
+  const handleUseBrowserLocation = async () => {
+    const { latitude, longitude } = await geolocation.getLocationFromBrowser();
+    console.log(latitude, longitude);
+    updateLocation(JSON.stringify({ latitude, longitude }));
   };
-
-  const handleNewLocation = (): void => {
-    updateLocation(location);
-    handleClose();
-  };
-
   return (
-    <SettingsPage inView={inView}>
+    <SettingsPage inView={settings.inView}>
       <HeadingWrapper>
         <Heading>Your Location</Heading>
-        <WiDirectionRight size={36} onClick={handleClose} />
+        <WiDirectionRight size={36} onClick={settings.handleClose} />
       </HeadingWrapper>
       <Input
         placeholder="Enter your location"
-        value={location}
-        onChange={(event: any) => setLocation(event?.target?.value)}
+        value={settings.location}
+        onChange={(event: any) => settings.setLocation(event?.target?.value)}
       />
       <VerticalCenterContent style={{ marginBottom: "1rem" }}>
-        <Button onClick={handleNewLocation} disabled={location.trim() === ""}>
+        <Button
+          onClick={settings.handleNewLocation}
+          disabled={settings.location.trim() === ""}
+        >
           Update Location
         </Button>
         <Button
-          onClick={() => updateLocation(location)}
-          disabled={location.trim() === ""}
+          onClick={handleUseBrowserLocation}
+          disabled={geolocation.isDenied()}
           style={{ marginLeft: "1rem" }}
         >
           Use Broswser Location
