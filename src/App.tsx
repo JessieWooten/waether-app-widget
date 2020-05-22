@@ -17,9 +17,6 @@ function App() {
     weatherApp.setForecast(undefined);
     weatherApp.setErrorMessage("");
   };
-  // TODO: Error handling
-  // LOADER
-  // TESTS
 
   const themeStyles = fetchThemeByName(
     weatherApp.errorMessage ? ForecastIcon.ERROR : weatherApp.forecast?.icon
