@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { rgba, lighten } from "polished";
-import { IForecast, IForecastImage } from "../models/Forecast";
+import { rgba } from "polished";
+import { IForecast } from "../models/Forecast";
 import WeatherIcon from "./base/WeatherIcon";
 import { centerContent } from "./base/Position";
 
