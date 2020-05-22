@@ -11,10 +11,12 @@ import {
   cloudy,
   partlyCloudyNight,
   tornado,
+  error,
+  defaultTheme,
 } from "../themeStyles";
 import partlyCloudyDay from "../themeStyles/partlyCloudyDay";
 
-const fetchThemeByName = (themeName: ForecastIconType): ITheme => {
+const fetchThemeByName = (themeName: ForecastIconType | undefined): ITheme => {
   switch (themeName) {
     case ForecastIcon.CLEAR_DAY:
       return clearDay;
@@ -42,8 +44,10 @@ const fetchThemeByName = (themeName: ForecastIconType): ITheme => {
       return thunderStorm;
     case ForecastIcon.TORNADO:
       return tornado;
+    case ForecastIcon.ERROR:
+      return error;
     default:
-      return clearDay;
+      return defaultTheme;
   }
 };
 

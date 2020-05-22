@@ -9,6 +9,8 @@ import partlyCloudyDay from "./partlyCloudyDay";
 import partlyCloudyNight from "./partlyCloudyNight";
 import thunderStorm from "./thunderStorm";
 import tornado from "./tornado";
+import error from "./error";
+import defaultTheme from "./default";
 
 export {
   clearDay,
@@ -22,4 +24,6 @@ export {
   partlyCloudyNight,
   thunderStorm,
   tornado,
+  error,
+  defaultTheme,
 };
