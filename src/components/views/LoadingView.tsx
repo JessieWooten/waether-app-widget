@@ -14,7 +14,9 @@ const LoadingView: React.FC = () => {
           <MoonGlow size={"36px"}>
             <MoonLoader size={"36px"} overlayColor="#3b4451" />
           </MoonGlow>
-          <LoadingText>Loading...</LoadingText>
+          <LoadingText>
+            <i>loading...</i>
+          </LoadingText>
         </BlurIn>
       </FullSizeWrapper>
     </LoaderWrapper>
@@ -40,6 +42,7 @@ const LoaderWrapper = styled.div`
 
 const LoadingText = styled(Text)`
   padding-top: 1rem;
+  opacity: 0.7;
 `;
 
 const FullSizeWrapper = styled(CenterContent)`
