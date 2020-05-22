@@ -11,6 +11,7 @@ const useWeatherApp = () => {
   const [forecast, setForecast] = useState<IForecast | undefined>(undefined);
   const [image, setImage] = useState<IForecastImage | undefined>(undefined);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isCelcius, setIsCelcius] = useState(
     window.localStorage.getItem("wwjw-celcius") === "true"
   );
@@ -23,6 +24,7 @@ const useWeatherApp = () => {
   useEffect(() => {
     (async () => {
       try {
+        setIsLoading(true);
         setErrorMessage("");
         setForecast(undefined);
         if (!location) return setIsSettingsOpen(true);
@@ -30,12 +32,15 @@ const useWeatherApp = () => {
 
         if (forecastResponse.hasOwnProperty("error")) {
           const errorResponse = forecastResponse as IForecastError;
-          return setErrorMessage(errorResponse.message);
+          setErrorMessage(errorResponse.message);
+          return setIsLoading(false);
         }
         const { image, forecast } = forecastResponse as IForecastResponse;
         setForecast(forecast);
         setImage(image);
+        setTimeout(() => setIsLoading(false), 200);
       } catch (e) {
+        setTimeout(() => setIsLoading(false), 200);
         setErrorMessage(e);
         console.error(e);
       }
@@ -48,6 +53,7 @@ const useWeatherApp = () => {
     setForecast,
     image,
     setImage,
+    isLoading,
     isSettingsOpen,
     setIsSettingsOpen,
     isCelcius,

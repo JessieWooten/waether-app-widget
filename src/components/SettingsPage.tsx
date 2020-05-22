@@ -10,6 +10,7 @@ import { WiDirectionRight } from "weather-icons-react";
 import ToggleSwitch from "./base/ToggleSwitch";
 import useSettings from "../hooks/useSettings";
 import useGeolocation from "../hooks/useGeolocation";
+import { MoonLoader } from "./Loaders";
 
 export interface IProps {
   isCelcius: boolean;
@@ -35,6 +36,7 @@ const Settings: React.FC<IProps> = ({
     const { latitude, longitude } = await geolocation.getLocationFromBrowser();
     console.log(latitude, longitude);
     updateLocation(JSON.stringify({ latitude, longitude }));
+    closePage();
   };
   return (
     <SettingsPage inView={settings.inView}>
@@ -50,16 +52,20 @@ const Settings: React.FC<IProps> = ({
       <VerticalCenterContent style={{ marginBottom: "1rem" }}>
         <Button
           onClick={settings.handleNewLocation}
-          disabled={settings.location.trim() === ""}
+          disabled={settings.location.trim() === "" || geolocation.isLoading}
         >
           Update Location
         </Button>
         <Button
           onClick={handleUseBrowserLocation}
-          disabled={geolocation.isDenied()}
+          disabled={geolocation.isDenied() || geolocation.isLoading}
           style={{ marginLeft: "1rem" }}
         >
-          Use Broswser Location
+          {geolocation.isLoading ? (
+            <MoonLoader overlayColor="#3b4451" />
+          ) : (
+            "Use Broswser Location"
+          )}
         </Button>
       </VerticalCenterContent>
 

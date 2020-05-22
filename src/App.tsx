@@ -3,14 +3,15 @@ import styled from "styled-components";
 import { lighten, rgba } from "polished";
 import Theme from "./themes/ThemeWrapper";
 import fetchThemeByName from "./themes/utils/fetchThemeByName";
-import ForecastText from "./components/ForecastText";
-import ForecastIconDisplay from "./components/ForecastIconDisplay";
+import ForecastView from "./components/views/ForecastView";
 import SettingsPage from "./components/SettingsPage";
 import SettingsDots from "./components/SettingsDots";
 import ErrorMessage from "./components/ErrorMessage";
 import useWeatherApp from "./hooks/useWeatherApp";
 import { ForecastIcon } from "./models/Forecast";
 import { Heading } from "./components/base/Typography";
+import SettingsView from "./components/views/SettingsView";
+import LoadingView from "./components/views/LoadingView";
 
 function App() {
   const weatherApp = useWeatherApp();
@@ -34,41 +35,28 @@ function App() {
         backgroundImage={weatherApp.image?.imgUrl || "#"}
         icon={weatherApp.forecast?.icon || ""}
       >
-        {/* open setting prompt */}
-        {/* {(weatherApp.location === "" || weatherApp.location === undefined) && (
-          <Heading>Please enter a location.</Heading>
-        )} */}
-        {/* ERROR MESSAGE */}
-        {weatherApp.errorMessage && (
+        {weatherApp.isLoading && <LoadingView />}
+        {weatherApp.errorMessage && !weatherApp.isLoading && (
           <ErrorMessage
             retry={resetAppState}
             errorMessage={weatherApp.errorMessage}
           />
         )}
         {/* FORECAST TEXT */}
-        {weatherApp.forecast !== undefined && (
-          <ForecastText
+        {weatherApp.forecast && !weatherApp.isLoading && (
+          <ForecastView
             isCelcius={weatherApp.isCelcius}
-            forecast={weatherApp.forecast || {}}
+            forecast={weatherApp.forecast}
           />
-        )}
-        {/* FORECAST ICON DISPLAY */}
-        {weatherApp.forecast !== undefined && (
-          <ForecastIconDisplay forecast={weatherApp.forecast} />
         )}
         {/* SETTINGS */}
-        {weatherApp.isSettingsOpen ? (
-          <SettingsPage
-            isCelcius={weatherApp.isCelcius}
-            toggleIsCelcius={() =>
-              weatherApp.setIsCelcius(!weatherApp.isCelcius)
-            }
-            closePage={() => weatherApp.setIsSettingsOpen(false)}
-            updateLocation={weatherApp.updateLocation}
-          />
-        ) : (
-          <SettingsDots onClick={() => weatherApp.setIsSettingsOpen(true)} />
-        )}
+        <SettingsView
+          isSettingsOpen={weatherApp.isSettingsOpen}
+          isCelcius={weatherApp.isCelcius}
+          setIsCelcius={weatherApp.setIsCelcius}
+          setIsSettingsOpen={weatherApp.setIsSettingsOpen}
+          updateLocation={weatherApp.updateLocation}
+        />
       </WidgetContainer>
     </Theme>
   );

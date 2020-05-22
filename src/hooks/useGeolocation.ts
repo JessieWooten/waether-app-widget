@@ -9,6 +9,7 @@ export type GeolocationPermissionType = GeolocationPermission | undefined;
 
 const useGeolocation = () => {
   const [permissionStatus, setPermissionStatus] = useState<any>(undefined);
+  const [isLoading, setIsLoading] = useState(false);
   const checkPermission = async () => {
     try {
       const status = await navigator.permissions.query({ name: "geolocation" });
@@ -30,21 +31,24 @@ const useGeolocation = () => {
 
   function getBrowserLocation(): Promise<Coordinates> {
     return new Promise((resolve, reject) => {
-      if (
-        !navigator ||
-        !navigator.geolocation ||
-        !navigator.geolocation.getCurrentPosition
-      ) {
+      if (!navigator?.geolocation?.getCurrentPosition) {
         return reject("Couldn't find getCurrentPosition on browser window");
       }
+      setIsLoading(true);
       const options = {
         enableHighAccuracy: true,
         timeout: 10000,
         maximumAge: 0,
       };
       navigator.geolocation.getCurrentPosition(
-        ({ coords }) => resolve(coords),
-        reject,
+        ({ coords }) => {
+          setIsLoading(false);
+          return resolve(coords);
+        },
+        (e) => {
+          setIsLoading(false);
+          return reject(e);
+        },
         options
       );
     });
@@ -54,6 +58,7 @@ const useGeolocation = () => {
     checkPermission,
     isGranted,
     isDenied,
+    isLoading,
   };
 };
 
