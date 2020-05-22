@@ -4,6 +4,7 @@ import { rgba } from "polished";
 import { IForecast } from "../models/Forecast";
 import WeatherIcon from "./base/WeatherIcon";
 import { CenterContent } from "./base/Position";
+import { BlurIn } from "./Animation";
 
 interface IProps {
   forecast: IForecast;
@@ -21,7 +22,7 @@ const ForecastIconDisplay: React.FC<IProps> = ({ forecast: { icon } }) => {
 };
 export default ForecastIconDisplay;
 
-const DisplayWrapper = styled.div`
+const DisplayWrapper = styled(BlurIn)`
   height: 100%;
   flex-grow: 1;
   display: flex;
@@ -30,6 +31,7 @@ const DisplayWrapper = styled.div`
   position: relative;
   position: absolute;
   right: 2em;
+  z-index: 1;
 `;
 
 const Halo = styled.div`

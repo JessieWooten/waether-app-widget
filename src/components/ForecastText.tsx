@@ -4,6 +4,7 @@ import { IForecast } from "../models/Forecast";
 import { Temperature, Heading, Text, Divider } from "./base/Typography";
 import WeatherIcon from "./base/WeatherIcon";
 import { invert, rgba } from "polished";
+import { BlurIn } from "./Animation";
 
 interface IProps {
   forecast: IForecast;
@@ -17,7 +18,7 @@ const WeatherText: React.FC<IProps> = ({
     return ((F - 32) * 5) / 9;
   }
   return (
-    <ForecastTextContainer>
+    <ForecastTextContainer delay="400ms">
       <Text style={{ padding: 0 }}>
         {location?.replace(", United States", "")}
       </Text>
@@ -36,7 +37,7 @@ const WeatherText: React.FC<IProps> = ({
 
 export default WeatherText;
 
-const ForecastTextContainer = styled.div`
+const ForecastTextContainer = styled(BlurIn)<{ delay: string }>`
   z-index: 15;
   text-shadow: 0 0 16px ${(props) => rgba(invert(props.theme.textColor), 0.3)};
 `;
