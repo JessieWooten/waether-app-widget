@@ -6,6 +6,7 @@ import Theme from "./themes/ThemeWrapper";
 import fetchThemeByName from "./themes/utils/fetchThemeByName";
 import ForecastText from "./components/ForecastText";
 import ForecastIconDisplay from "./components/ForecastIconDisplay";
+import { lighten, rgba } from "polished";
 
 function App() {
   const [forecast, setForecast] = useState<IForecast | undefined>(undefined);
@@ -27,7 +28,11 @@ function App() {
   const themeStyles = forecast ? fetchThemeByName(forecast.icon) : undefined;
   return (
     <Theme themeStyles={themeStyles}>
-      <WidgetContainer className="App" backgroundImage={image?.imgUrl || "#"}>
+      <WidgetContainer
+        className="App"
+        backgroundImage={image?.imgUrl || "#"}
+        icon={forecast?.icon || ""}
+      >
         {forecast && <ForecastText forecast={forecast} />}
         {forecast && <ForecastIconDisplay forecast={forecast} />}
       </WidgetContainer>
@@ -37,11 +42,14 @@ function App() {
 
 export default App;
 
-const WidgetContainer = styled.div<{ backgroundImage: string }>`
+const WidgetContainer = styled.div<{ backgroundImage: string; icon: string }>`
   position: relative;
   width: 480px;
   height: 260px;
-  background: ${(props) => props.theme.background};
+  background: linear-gradient(
+    ${(props) => lighten(0.15, props.theme.background)},
+    ${(props) => props.theme.background}
+  );
   background-image: ${(props) => `url(${props.backgroundImage})`};
   background-position: center;
   background-size: cover;
@@ -51,4 +59,18 @@ const WidgetContainer = styled.div<{ backgroundImage: string }>`
   align-items: center;
   justify-content: space-between;
   padding: 0 2rem;
+  &::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    background: ${(props) =>
+      props.icon.includes("night")
+        ? rgba(0, 0, 0, 0.5)
+        : props.icon.includes("snow")
+        ? rgba(255, 255, 255, 0.2)
+        : "transparent"};
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 `;
