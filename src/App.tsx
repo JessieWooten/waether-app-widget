@@ -6,7 +6,6 @@ import Theme from "./themes/ThemeWrapper";
 import fetchThemeByName from "./themes/utils/fetchThemeByName";
 import ForecastText from "./components/ForecastText";
 import ForecastIconDisplay from "./components/ForecastIconDisplay";
-import { rgba, darken } from "polished";
 
 function App() {
   const [forecast, setForecast] = useState<IForecast | undefined>(undefined);
