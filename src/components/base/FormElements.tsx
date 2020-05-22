@@ -21,6 +21,9 @@ export const Input = styled.input`
 `;
 
 export const Button = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   outline: none;
   height: 40px;
   width: 120px;
