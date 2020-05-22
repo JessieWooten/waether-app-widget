@@ -6,6 +6,12 @@ export interface IForecast {
   precipProbability: number;
 }
 
+export interface IForecastImage {
+  id: string;
+  imgUrl: string;
+  photographer: string;
+}
+
 export enum ForecastIcon {
   CLEAR_DAY = "clear-day",
   CLEAR_NIGHT = "clear-night",
