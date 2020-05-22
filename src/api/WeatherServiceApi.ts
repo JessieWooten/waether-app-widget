@@ -1,4 +1,4 @@
-import { IForecast, ForecastIcon, IForecastImage } from "../models/Forecast";
+import { IForecast, IForecastImage } from "../models/Forecast";
 
 const API_URL = "https://woot-weather-application.herokuapp.com/weather";
 
@@ -9,32 +9,59 @@ export interface IForecastResponse {
 }
 
 const fetchForecast = async (url: string): Promise<IForecastResponse> => {
-  const forecast: IForecastResponse = {
-    location: "Nashville, Tennessee, United States",
+  const { location, forecast, image } = await fetch(url).then((res) =>
+    res.json()
+  );
+  const forecastResponse: IForecastResponse = {
     forecast: {
-      temperature: 64.87,
-      summary: "Rain today through Wednesday.",
-      icon: ForecastIcon.RAIN,
-      precipProbability: 0,
+      location: location,
+      temperature: forecast.temperature,
+      summary: forecast.summary,
+      icon: forecast.icon,
+      precipProbability: forecast.precipProbability,
     },
     image: {
-      id: "YUGSnfrliPk",
-      imgUrl:
-        "https://images.unsplash.com/photo-1521147923319-b7fbf0b31c6f?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjEzNjU0MH0",
-      photographer: "Joel Tasche",
+      id: image.id,
+      imgUrl: image.imgUrl,
+      photographer: image.photographer,
     },
   };
-  return new Promise((resolve) => setTimeout(() => resolve(forecast), 0));
+  return forecastResponse;
 };
 
 export const fetchForecastByCoordinates = async (
-  lat: string,
-  long: string
+  latitude: number,
+  longitude: number
 ): Promise<IForecastResponse> => {
-  return fetchForecast("");
+  const url = `${API_URL}?latitiude=${latitude}&longitude=${longitude}`;
+  return fetchForecast(url);
 };
+
 export const fetchForecastByLocationName = async (
-  name: string
+  place: string
 ): Promise<IForecastResponse> => {
-  return fetchForecast("");
+  const url = `${API_URL}?address=${place.toLocaleLowerCase().trim()}`;
+  return fetchForecast(url);
 };
+
+export async function getBrowserLocation(): Promise<Coordinates> {
+  return new Promise((resolve, reject) => {
+    if (
+      !navigator ||
+      !navigator.geolocation ||
+      !navigator.geolocation.getCurrentPosition
+    ) {
+      return reject("Couldn't find getCurrentPosition on browser window");
+    }
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0,
+    };
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => resolve(coords),
+      reject,
+      options
+    );
+  });
+}
