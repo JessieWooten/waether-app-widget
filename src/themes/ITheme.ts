@@ -1,5 +1,7 @@
 export interface ITheme {
-  backgroundColor: string;
+  background: string;
+  primaryColor: string;
+  secondaryColor: string;
   textColor: string;
   fontFamily?: string;
 }
