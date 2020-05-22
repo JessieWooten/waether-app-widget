@@ -40,8 +40,8 @@ const Halo = styled.div`
     ${(props) => rgba(props.theme.primaryColor, 0)}
   );
   /* filter: blur(4px); */
-  width: 320px;
-  height: 320px;
+  width: 330px;
+  height: 330px;
   border-radius: 50%;
   position: absolute;
   z-index: 0;
