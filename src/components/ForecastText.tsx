@@ -7,22 +7,29 @@ import { invert, rgba } from "polished";
 
 interface IProps {
   forecast: IForecast;
+  isCelcius: boolean;
 }
 const WeatherText: React.FC<IProps> = ({
+  isCelcius,
   forecast: { temperature, summary, icon, location, precipProbability },
 }) => {
+  function convertToCelcius(F: number): number {
+    return ((F - 32) * 5) / 9;
+  }
   return (
     <ForecastTextContainer>
       <Text style={{ padding: 0 }}>
         {location?.replace(", United States", "")}
       </Text>
-      <Temperature>{Math.round(temperature)}˚</Temperature>
+      <Temperature>
+        {Math.round(isCelcius ? convertToCelcius(temperature) : temperature)}˚
+      </Temperature>
       <HeadingWrapper>
         <WeatherIcon icon={icon} />
         <Heading>{summary}</Heading>
       </HeadingWrapper>
       <Divider />
-      <Text>Current Precipitation: {precipProbability * 100}%</Text>
+      <Text>Current Precipitation: {Math.round(precipProbability * 100)}%</Text>
     </ForecastTextContainer>
   );
 };
