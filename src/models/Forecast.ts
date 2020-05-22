@@ -26,6 +26,7 @@ export enum ForecastIcon {
   HAIL = "hail",
   THUNDERSTORM = "thunderstorm",
   TORNADO = "tornado",
+  ERROR = "error",
 }
 
 export type ForecastIconType = ForecastIcon;
