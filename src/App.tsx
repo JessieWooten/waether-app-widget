@@ -27,10 +27,12 @@ function App() {
     location = newLocation;
   };
   const [errorMessage, setErrorMessage] = useState("");
+
   useEffect(() => {
     (async () => {
       try {
         setErrorMessage("");
+        setForecast(undefined);
         let forecastResponse;
         if (location)
           forecastResponse = await fetchForecastByLocationName(location);
@@ -49,7 +51,9 @@ function App() {
       }
     })();
   }, [location]);
+
   const themeStyles = forecast ? fetchThemeByName(forecast.icon) : undefined;
+
   return (
     <Theme themeStyles={themeStyles}>
       <WidgetContainer
@@ -93,6 +97,7 @@ const WidgetContainer = styled.div<{ backgroundImage: string; icon: string }>`
   align-items: center;
   justify-content: space-between;
   padding: 0 2rem;
+  transition: 300ms;
   &::after {
     pointer-events: none;
     content: "";
