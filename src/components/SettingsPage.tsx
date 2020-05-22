@@ -92,7 +92,7 @@ const SettingsPage = styled.div<{ inView: Boolean }>`
 const HeadingWrapper = styled(VerticalCenterSpaceBetween)`
   & svg {
     &:hover {
-      fill: #ffe700;
+      fill: #ffd151;
     }
   }
 `;

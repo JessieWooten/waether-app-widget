@@ -32,8 +32,9 @@ const DotsContainer = styled(CenterContent)`
   position: absolute;
   top: 1rem;
   right: 1rem;
+  z-index: 15;
   &:hover div {
-    background: #ffe700;
+    background: #ffd151;
     height: 5px;
     width: 5px;
   }
