@@ -1,70 +1,73 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { lighten, rgba } from "polished";
-import { IForecast, IForecastImage } from "./models/Forecast";
-import { fetchForecastByLocationName } from "./api/WeatherServiceApi";
 import Theme from "./themes/ThemeWrapper";
 import fetchThemeByName from "./themes/utils/fetchThemeByName";
 import ForecastText from "./components/ForecastText";
 import ForecastIconDisplay from "./components/ForecastIconDisplay";
 import SettingsPage from "./components/SettingsPage";
 import SettingsDots from "./components/SettingsDots";
+import ErrorMessage from "./components/ErrorMessage";
+import useWeatherApp from "./hooks/useWeatherApp";
+import { ForecastIcon } from "./models/Forecast";
+import { Heading } from "./components/base/Typography";
 
 function App() {
-  let location = window.localStorage.getItem("wwjw-location");
-  const [forecast, setForecast] = useState<IForecast | undefined>(undefined);
-  const [image, setImage] = useState<IForecastImage | undefined>(undefined);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [isCelcius, setIsCelcius] = useState(
-    window.localStorage.getItem("wwjw-celcius") === "true"
-  );
-  const updateLocation = (newLocation: string) => {
-    window.localStorage.setItem("wwjw-location", newLocation);
-    location = newLocation;
+  const weatherApp = useWeatherApp();
+  const resetAppState = () => {
+    window.localStorage.removeItem("wwjw-location");
+    weatherApp.setForecast(undefined);
+    weatherApp.setErrorMessage("");
   };
-  const [errorMessage, setErrorMessage] = useState("");
-  useEffect(() => {
-    (async () => {
-      try {
-        setErrorMessage("");
-        setForecast(undefined);
-        if (!location) return setIsSettingsOpen(true);
-        const forecastResponse = await fetchForecastByLocationName(location);
-        // const coords = await getBrowserLocation();
-        // forecastResponse = await fetchForecastByCoordinates(
-        //   coords.latitude,
-        //   coords.longitude
-        // );
-        // }
-        setForecast(forecastResponse.forecast);
-        setImage(forecastResponse.image);
-      } catch (e) {
-        setErrorMessage(e);
-        console.error(e);
-      }
-    })();
-  }, [location]);
+  // TODO: Error handling
+  // LOADER
+  // TESTS
 
-  const themeStyles = forecast ? fetchThemeByName(forecast.icon) : undefined;
+  const themeStyles = fetchThemeByName(
+    weatherApp.errorMessage ? ForecastIcon.ERROR : weatherApp.forecast?.icon
+  );
 
   return (
     <Theme themeStyles={themeStyles}>
       <WidgetContainer
         className="App"
-        backgroundImage={image?.imgUrl || "#"}
-        icon={forecast?.icon || ""}
+        backgroundImage={weatherApp.image?.imgUrl || "#"}
+        icon={weatherApp.forecast?.icon || ""}
       >
-        {forecast && <ForecastText isCelcius={isCelcius} forecast={forecast} />}
-        {forecast && <ForecastIconDisplay forecast={forecast} />}
-        {isSettingsOpen ? (
+        {/* open setting prompt */}
+        {/* {(weatherApp.location === "" || weatherApp.location === undefined) && (
+          <Heading>Please enter a location.</Heading>
+        )} */}
+        {/* ERROR MESSAGE */}
+        {weatherApp.errorMessage && (
+          <ErrorMessage
+            retry={resetAppState}
+            errorMessage={weatherApp.errorMessage}
+          />
+        )}
+        {/* FORECAST TEXT */}
+        {weatherApp.forecast !== undefined && (
+          <ForecastText
+            isCelcius={weatherApp.isCelcius}
+            forecast={weatherApp.forecast || {}}
+          />
+        )}
+        {/* FORECAST ICON DISPLAY */}
+        {weatherApp.forecast !== undefined && (
+          <ForecastIconDisplay forecast={weatherApp.forecast} />
+        )}
+        {/* SETTINGS */}
+        {weatherApp.isSettingsOpen ? (
           <SettingsPage
-            isCelcius={isCelcius}
-            toggleIsCelcius={() => setIsCelcius(!isCelcius)}
-            closePage={() => setIsSettingsOpen(false)}
-            updateLocation={updateLocation}
+            isCelcius={weatherApp.isCelcius}
+            toggleIsCelcius={() =>
+              weatherApp.setIsCelcius(!weatherApp.isCelcius)
+            }
+            closePage={() => weatherApp.setIsSettingsOpen(false)}
+            updateLocation={weatherApp.updateLocation}
           />
         ) : (
-          <SettingsDots onClick={() => setIsSettingsOpen(true)} />
+          <SettingsDots onClick={() => weatherApp.setIsSettingsOpen(true)} />
         )}
       </WidgetContainer>
     </Theme>
