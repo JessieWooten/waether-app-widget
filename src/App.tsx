@@ -14,9 +14,8 @@ import PhotoCred from "./components/PhotoCred";
 function App() {
   const weatherApp = useWeatherApp();
   const resetAppState = () => {
-    window.localStorage.removeItem("wwjw-location");
     weatherApp.setForecast(undefined);
-    weatherApp.setErrorMessage("");
+    weatherApp.updateLocation("");
   };
 
   const themeStyles = fetchThemeByName(
