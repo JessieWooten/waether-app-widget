@@ -41,7 +41,7 @@ const Settings: React.FC<IProps> = ({
   return (
     <SettingsPage inView={settings.inView}>
       <HeadingWrapper>
-        <Heading>Your Location</Heading>
+        <Heading style={{ color: "#fcfcfc" }}>Your Location</Heading>
         <WiDirectionRight size={36} onClick={settings.handleClose} />
       </HeadingWrapper>
       <Input
@@ -99,6 +99,7 @@ const SettingsPage = styled.div<{ inView: Boolean }>`
 
 const HeadingWrapper = styled(VerticalCenterSpaceBetween)`
   & svg {
+    color: #fcfcfc;
     &:hover {
       fill: #ffd151;
     }
@@ -109,5 +110,6 @@ const Unit = styled.span<{ isSelected: boolean }>`
   padding: 0 0.5rem;
   opacity: ${(props) => (props.isSelected ? 1 : 0.3)};
   font-size: 1.2rem;
+  color: #fcfcfc;
   font-weight: ${(props) => (props.isSelected ? 700 : 400)};
 `;
