@@ -23,31 +23,38 @@ interface IProps {
 const WeatherIcon: React.FC<IProps> = ({ icon, size = 24 }) => {
   switch (icon) {
     case ForecastIcon.CLEAR_DAY:
-      return <WiDaySunny size={size} />;
+      return <WiDaySunny size={size} title={ForecastIcon.CLEAR_DAY} />;
     case ForecastIcon.CLEAR_NIGHT:
-      return <WiNightClear size={size} />;
+      return <WiNightClear size={size} title={ForecastIcon.CLEAR_NIGHT} />;
     case ForecastIcon.RAIN:
-      return <WiRain size={size} />;
+      return <WiRain size={size} title={ForecastIcon.RAIN} />;
     case ForecastIcon.SNOW:
-      return <WiSnow size={size} />;
+      return <WiSnow size={size} title={ForecastIcon.SNOW} />;
     case ForecastIcon.SLEET:
-      return <WiSleet size={size} />;
+      return <WiSleet size={size} title={ForecastIcon.SLEET} />;
     case ForecastIcon.WIND:
-      return <WiStrongWind size={size} />;
+      return <WiStrongWind size={size} title={ForecastIcon.WIND} />;
     case ForecastIcon.FOG:
-      return <WiFog size={size} />;
+      return <WiFog size={size} title={ForecastIcon.FOG} />;
     case ForecastIcon.CLOUDY:
-      return <WiCloudy size={size} />;
+      return <WiCloudy size={size} title={ForecastIcon.CLOUDY} />;
     case ForecastIcon.PARTLY_CLOUDY_DAY:
-      return <WiDayCloudyHigh size={size} />;
+      return (
+        <WiDayCloudyHigh size={size} title={ForecastIcon.PARTLY_CLOUDY_DAY} />
+      );
     case ForecastIcon.PARTLY_CLOUDY_NIGHT:
-      return <WiNightAltPartlyCloudy size={size} />;
+      return (
+        <WiNightAltPartlyCloudy
+          size={size}
+          title={ForecastIcon.PARTLY_CLOUDY_NIGHT}
+        />
+      );
     case ForecastIcon.HAIL:
-      return <WiHail size={size} />;
+      return <WiHail size={size} title={ForecastIcon.HAIL} />;
     case ForecastIcon.THUNDERSTORM:
-      return <WiThunderstorm size={size} />;
+      return <WiThunderstorm size={size} title={ForecastIcon.THUNDERSTORM} />;
     case ForecastIcon.TORNADO:
-      return <WiTornado size={size} />;
+      return <WiTornado size={size} title={ForecastIcon.TORNADO} />;
     default:
       return <WiDaySunny size={size} color="#000" />;
   }
