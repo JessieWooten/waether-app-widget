@@ -11,7 +11,7 @@ export const Input = styled.input`
   display: block;
   width: 100%;
   color: white;
-  font-weight: 500;
+  font-weight: 400;
   margin-bottom: 1rem;
   &::placeholder {
     font-weight: 300;

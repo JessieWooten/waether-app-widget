@@ -2,6 +2,7 @@ import React from "react";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { clearDay } from "./themeStyles";
 import { ITheme } from "./ITheme";
+// import Roboto from "./fonts/roboto.woff2";
 
 const GlobalStyle = createGlobalStyle<{ themeStyles: ITheme }>`
   *,
@@ -15,12 +16,12 @@ const GlobalStyle = createGlobalStyle<{ themeStyles: ITheme }>`
   }
   html {
     font-size: 12px;
+    letter-spacing: 0.02rem;
   }
   body {
     display: flex;
     align-items: center; 
     justify-content: center;
-    font-family: ${(props) => props.themeStyles.fontFamily || "Roboto"};
     background: white;
     font-size: 12px;
     color: ${(props) => props.themeStyles.textColor};
