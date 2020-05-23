@@ -31,8 +31,8 @@ const WeatherText: React.FC<IProps> = ({
       </HeadingWrapper>
       <Divider />
       <Text>
-        Current Precipitation Probability: {Math.round(precipProbability * 100)}
-        %
+        Current Precipitation Probability:
+        {Math.round(precipProbability * 100)}%
       </Text>
     </ForecastTextContainer>
   );
