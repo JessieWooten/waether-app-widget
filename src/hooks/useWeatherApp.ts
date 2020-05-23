@@ -7,7 +7,9 @@ import {
 } from "../api/WeatherServiceApi";
 
 const useWeatherApp = () => {
-  let location = window.localStorage.getItem("wwjw-location");
+  const [location, setLocation] = useState(
+    window.localStorage.getItem("wwjw-location")
+  );
   const [forecast, setForecast] = useState<IForecast | undefined>(undefined);
   const [image, setImage] = useState<IForecastImage | undefined>(undefined);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -15,9 +17,9 @@ const useWeatherApp = () => {
   const [isCelcius, setIsCelcius] = useState(
     window.localStorage.getItem("wwjw-celcius") === "true"
   );
-  const updateLocation = (newLocation: string) => {
-    window.localStorage.setItem("wwjw-location", newLocation);
-    location = newLocation;
+  const updateLocation = (newLocation: string | undefined) => {
+    window.localStorage.setItem("wwjw-location", newLocation as string);
+    setLocation(newLocation as string);
   };
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -27,7 +29,10 @@ const useWeatherApp = () => {
         setIsLoading(true);
         setErrorMessage("");
         setForecast(undefined);
-        if (!location) return setIsSettingsOpen(true);
+        if (!location) {
+          setIsSettingsOpen(true);
+          return setIsLoading(false);
+        }
         const forecastResponse = await handleFetchForecast(location);
 
         if (forecastResponse.hasOwnProperty("error")) {
