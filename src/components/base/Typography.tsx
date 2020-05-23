@@ -17,6 +17,10 @@ export const Text = styled.p`
   font-weight: 400;
   padding: 0 0 0.5rem 0;
 `;
+export const Signature = styled.p`
+  font-size: 1rem;
+  font-weight: 300;
+`;
 
 export const Divider = styled.hr`
   display: block;

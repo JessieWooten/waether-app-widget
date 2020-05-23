@@ -9,6 +9,7 @@ import useWeatherApp from "./hooks/useWeatherApp";
 import { ForecastIcon } from "./models/Forecast";
 import SettingsView from "./components/views/SettingsView";
 import LoadingView from "./components/views/LoadingView";
+import PhotoCred from "./components/PhotoCred";
 
 function App() {
   const weatherApp = useWeatherApp();
@@ -51,6 +52,8 @@ function App() {
           setIsSettingsOpen={weatherApp.setIsSettingsOpen}
           updateLocation={weatherApp.updateLocation}
         />
+
+        <PhotoCred photographer={weatherApp.image?.photographer} />
       </WidgetContainer>
     </Theme>
   );
