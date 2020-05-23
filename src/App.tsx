@@ -30,7 +30,7 @@ function App() {
         backgroundImage={weatherApp.image?.imgUrl || "#"}
         icon={weatherApp.forecast?.icon || ""}
       >
-        {weatherApp.isLoading && <LoadingView />}
+        {!weatherApp.isLoading && <LoadingView />}
         {weatherApp.errorMessage && !weatherApp.isLoading && (
           <ErrorMessage
             retry={resetAppState}
