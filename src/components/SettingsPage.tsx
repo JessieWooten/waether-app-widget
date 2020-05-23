@@ -42,7 +42,9 @@ const Settings: React.FC<IProps> = ({
     <SettingsPage inView={settings.inView}>
       <HeadingWrapper>
         <Heading style={{ color: "#fcfcfc" }}>Your Location</Heading>
-        <WiDirectionRight size={36} onClick={settings.handleClose} />
+        {settings.location.trim() !== "" && (
+          <WiDirectionRight size={36} onClick={settings.handleClose} />
+        )}
       </HeadingWrapper>
       <Input
         placeholder="Enter your location"
