@@ -29,12 +29,13 @@ const useGeolocation = () => {
     return await getBrowserLocation();
   };
 
-  function getBrowserLocation(): Promise<Coordinates> {
-    return new Promise((resolve, reject) => {
+  const getBrowserLocation = (): Promise<Coordinates> => {
+    return new Promise(async (resolve, reject) => {
       if (!navigator?.geolocation?.getCurrentPosition) {
         return reject("Couldn't find getCurrentPosition on browser window");
       }
       setIsLoading(true);
+      await checkPermission();
       const options = {
         enableHighAccuracy: true,
         timeout: 10000,
@@ -52,7 +53,7 @@ const useGeolocation = () => {
         options
       );
     });
-  }
+  };
   return {
     getLocationFromBrowser,
     checkPermission,
