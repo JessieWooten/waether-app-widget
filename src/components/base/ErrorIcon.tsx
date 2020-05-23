@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import Exclamation from "./exclamation-solid.svg";
 
 interface IProps {
   size?: number;
